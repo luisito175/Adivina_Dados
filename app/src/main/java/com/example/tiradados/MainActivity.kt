@@ -1,13 +1,16 @@
 package com.example.tiradados
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
+import android.widget.Toast
 import com.example.tiradados.databinding.ActivityMainBinding
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 import kotlin.random.Random
+import kotlin.jvm.java
 
 /*
 Ejemplo de santiag Rodenas Herráiz
@@ -43,15 +46,26 @@ class MainActivity : AppCompatActivity() {
         bindingMain.txtResultado.visibility = View.INVISIBLE
         bindingMain.imageButton.setOnClickListener{
             bindingMain.txtResultado.visibility = View.VISIBLE
-            game()  //comienza el juego
+            game()
 
         }
     }
 
     //Comienza el juego
-    private fun game(){
-        sheduleRun() //planificamos las tiradas.
+    private fun game() {
+        val texto = bindingMain.numero.text.toString()
+        val numero_usuario = texto.toIntOrNull()
+
+
+        if (numero_usuario == null || numero_usuario < 3 || numero_usuario > 18) {
+            Toast.makeText(this, "Número no válido (3-18)", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+
+        sheduleRun()
     }
+
 
     /*
     Lanzamos 5 veces los dados y lo programamos con 1sg de diferencia.
@@ -83,9 +97,8 @@ class MainActivity : AppCompatActivity() {
     solución que prefiráis.
      */
     private fun sheduleRun() {
-
         val schedulerExecutor = Executors.newSingleThreadScheduledExecutor()
-        val msc = 1000
+        val msc = 100
         for (i in 1..5){//lanzamos 5 veces el dado
             schedulerExecutor.schedule(
                 {
@@ -100,7 +113,11 @@ class MainActivity : AppCompatActivity() {
             msc  * 7.toLong(), TimeUnit.MILLISECONDS)
 
         schedulerExecutor.shutdown()  //Ya no aceptamos más hilos.
-
+        val numero_usuario = bindingMain.numero.text.toString().toIntOrNull()
+        if (numero_usuario != null && sum == numero_usuario) {
+            val intent = Intent(this, Acertaste::class.java)
+            startActivity(intent)
+        }
     }
 
 
