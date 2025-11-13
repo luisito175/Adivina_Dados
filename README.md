@@ -30,5 +30,5 @@ Durante la animación, el botón de lanzamiento se bloquea hasta que finaliza la
 1. Clonar o descargar el proyecto.  
 2. Abrir con **Android Studio**.  
 3. Conectar un emulador o dispositivo Android.  
-4. Ejecutar con el botón **Run ▶️**.
+4. Ejecutar con el botón **Run**.
 
